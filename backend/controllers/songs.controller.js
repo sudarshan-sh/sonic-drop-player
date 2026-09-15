@@ -8,14 +8,14 @@ export const addSongController = async (req, res) => {
   const { playlist_id, song_id } = req.body;
 
   if (!playlist_id || !song_id) {
-    handleResponse(res, 400, "All fields are required");
+    return handleResponse(res, 400, "All fields are required");
   }
 
   try {
     // add song to the playlist
     const newSong = await addSongService(playlist_id, song_id);
 
-    handleResponse(res, 201, "Song added successfully", {
+    return handleResponse(res, 201, "Song added successfully", {
       song: {
         id: newSong.id,
         title: newSong.title,
@@ -37,7 +37,7 @@ export const getAllSongsController = async (req, res) => {
     // get all songs from the database
     const songs = await getAllSongsService();
 
-    handleResponse(res, 200, "Songs fetched successfully", {
+    return handleResponse(res, 200, "Songs fetched successfully", {
       songs,
     });
   } catch (error) {
@@ -51,14 +51,14 @@ export const removeSongController = async (req, res) => {
   const { playlist_id, song_id } = req.body;
 
   if (!playlist_id || !song_id) {
-    handleResponse(res, 400, "All fields are required");
+    return handleResponse(res, 400, "All fields are required");
   }
 
   try {
     // delete song from the playlist
     const deletedSong = await removeSongService(playlist_id, song_id);
 
-    handleResponse(res, 200, "Song removed from the playlist!", {
+    return handleResponse(res, 200, "Song removed from the playlist!", {
       song: {
         id: deletedSong.id,
         title: deletedSong.title,

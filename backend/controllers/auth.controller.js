@@ -57,7 +57,7 @@ export const loginUserController = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    handleResponse(res, 400, "Please provide all the required fields");
+    return handleResponse(res, 400, "Please provide all the required fields");
   }
 
   try {
@@ -65,7 +65,7 @@ export const loginUserController = async (req, res) => {
     const user = await findUserByEmailService(email);
 
     if (user.rows.length === 0) {
-      handleResponse(res, 400, "No user found, please register first!");
+      return handleResponse(res, 400, "No user found, please register first!");
     }
 
     const userData = user.rows[0];
@@ -74,14 +74,14 @@ export const loginUserController = async (req, res) => {
 
     if (!isMatch) {
       // if the password does not match, return an error message
-      handleResponse(res, 400, "Please enter a valid password!");
+      return handleResponse(res, 400, "Please enter a valid password!");
     }
 
     const token = generateToken(userData.id);
 
     res.cookie("token", token, cookieOptions);
 
-    handleResponse(res, 200, "User logged in successfully", {
+    return handleResponse(res, 200, "User logged in successfully", {
       user: {
         id: userData.id,
         name: userData.name,
@@ -97,5 +97,5 @@ export const loginUserController = async (req, res) => {
 // logout user
 export const logoutUserController = async (req, res) => {
   res.cookie("token", "", cookieOptions);
-  handleResponse(res, 200, "User logged out successfully");
+  return handleResponse(res, 200, "User logged out successfully");
 };

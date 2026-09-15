@@ -10,7 +10,7 @@ export const createPlaylistController = async (req, res) => {
   const { title, description, user_id } = req.body;
 
   if (!title || !user_id) {
-    handleResponse(res, 400, "Title is required");
+    return handleResponse(res, 400, "Title is required");
   }
 
   try {
@@ -21,7 +21,7 @@ export const createPlaylistController = async (req, res) => {
       user_id,
     );
 
-    handleResponse(res, 201, "Playlist created successfully", {
+    return handleResponse(res, 201, "Playlist created successfully", {
       playlist: {
         id: newPlaylist.id,
         title: newPlaylist.title || "",
@@ -42,7 +42,7 @@ export const getAllPlaylistsController = async (req, res) => {
     // get all playlists from the database
     const playlists = await getAllPlaylistsService();
 
-    handleResponse(res, 200, "Playlists fetched successfully", {
+    return handleResponse(res, 200, "Playlists fetched successfully", {
       playlists,
     });
   } catch (error) {
@@ -53,10 +53,11 @@ export const getAllPlaylistsController = async (req, res) => {
 
 // edit a playlist in the database
 export const editPlaylistController = async (req, res) => {
-  const { playlist_id, title, description } = req.body;
+  const { playlist_id } = req.params;
+  const { title, description } = req.body;
 
   if (!playlist_id || !title) {
-    handleResponse(res, 400, "All fields are required");
+    return handleResponse(res, 400, "All fields are required");
   }
 
   try {
@@ -67,7 +68,7 @@ export const editPlaylistController = async (req, res) => {
       description,
     );
 
-    handleResponse(res, 200, "Playlist updated successfully", {
+    return handleResponse(res, 200, "Playlist updated successfully", {
       playlist: {
         id: updatedPlaylist.id,
         title: updatedPlaylist.title || "",
@@ -84,17 +85,17 @@ export const editPlaylistController = async (req, res) => {
 
 // delete a playlist from the database
 export const deletePlaylistController = async (req, res) => {
-  const { playlist_id } = req.body;
+  const { playlist_id } = req.params;
 
   if (!playlist_id) {
-    handleResponse(res, 400, "Playlist ID is required");
+    return handleResponse(res, 400, "Playlist ID is required");
   }
 
   try {
     // delete playlist
     const deletedPlaylist = await deletePlaylistService(playlist_id);
 
-    handleResponse(res, 200, "Playlist deleted successfully", {
+    return handleResponse(res, 200, "Playlist deleted successfully", {
       playlist: {
         id: deletedPlaylist.id,
         title: deletedPlaylist.title || "",
