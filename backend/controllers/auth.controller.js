@@ -98,3 +98,9 @@ export const loginUserController = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// logout user
+export const logoutUserController = async (req, res) => {
+  res.cookie("token", "", cookieOptions);
+  res.status(200).json({ message: "User logged out successfully" });
+};
