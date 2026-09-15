@@ -10,7 +10,7 @@ export const createPlaylistController = async (req, res) => {
   const { title, description, user_id } = req.body;
 
   if (!title || !user_id) {
-    return handleResponse(res, 400, "Title is required");
+    return handleResponse(res, 400, "Title and user_id is required");
   }
 
   try {
