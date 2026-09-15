@@ -1,4 +1,4 @@
-import { addSong, removeSong, getAllSongs } from "../models/songs.model";
+import { addSong, removeSong, getAllSongs } from "../models/songs.model.js";
 
 export const addSongService = async (playlist_id, song_id) => {
   try {

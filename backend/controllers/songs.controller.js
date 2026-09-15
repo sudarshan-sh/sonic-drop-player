@@ -1,8 +1,8 @@
-import { handleResponse } from "../helper/helper";
+import { handleResponse } from "../helper/helper.js";
 import {
   getAllSongsService,
   removeSongService,
-} from "../services/songs.service";
+} from "../services/songs.service.js";
 
 export const addSongController = async (req, res) => {
   const { playlist_id, song_id } = req.body;

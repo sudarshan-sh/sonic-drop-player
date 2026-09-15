@@ -1,4 +1,4 @@
-import { createPlaylist, getAllPlaylists } from "../models/playlists.model";
+import { createPlaylist, getAllPlaylists } from "../models/playlists.model.js";
 
 export const createPlaylistService = async (title, description, user_id) => {
   try {
