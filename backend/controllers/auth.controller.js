@@ -8,6 +8,7 @@ import {
   comparePassword,
   cookieOptions,
   generateToken,
+  handleResponse,
   hashPassword,
 } from "../helper/helper.js";
 
@@ -56,9 +57,7 @@ export const loginUserController = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Please provide all the required fields" });
+    handleResponse(res, 400, "Please provide all the required fields");
   }
 
   try {
@@ -66,9 +65,7 @@ export const loginUserController = async (req, res) => {
     const user = await findUserByEmailService(email);
 
     if (user.rows.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "No user found, please register first!" });
+      handleResponse(res, 400, "No user found, please register first!");
     }
 
     const userData = user.rows[0];
@@ -77,16 +74,14 @@ export const loginUserController = async (req, res) => {
 
     if (!isMatch) {
       // if the password does not match, return an error message
-      return res
-        .status(400)
-        .json({ message: "Please enter a valid password!" });
+      handleResponse(res, 400, "Please enter a valid password!");
     }
 
     const token = generateToken(userData.id);
 
     res.cookie("token", token, cookieOptions);
 
-    res.json({
+    handleResponse(res, 200, "User logged in successfully", {
       user: {
         id: userData.id,
         name: userData.name,
@@ -102,5 +97,5 @@ export const loginUserController = async (req, res) => {
 // logout user
 export const logoutUserController = async (req, res) => {
   res.cookie("token", "", cookieOptions);
-  res.status(200).json({ message: "User logged out successfully" });
+  handleResponse(res, 200, "User logged out successfully");
 };

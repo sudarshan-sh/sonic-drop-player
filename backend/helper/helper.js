@@ -26,3 +26,12 @@ export const cookieOptions = {
   sameSite: "Strict", // to prevent CSRF attacks
   maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
 };
+
+// standardize response function
+export const handleResponse = (res, status, message, data = null) => {
+  res.status(status).json({
+    status,
+    message,
+    data,
+  });
+};
