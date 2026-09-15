@@ -48,7 +48,8 @@ export const getAllSongsController = async (req, res) => {
 
 // delete a song from the playlist
 export const removeSongController = async (req, res) => {
-  const { playlist_id, song_id } = req.body;
+  const { song_id } = req.params;
+  const { playlist_id } = req.body;
 
   if (!playlist_id || !song_id) {
     return handleResponse(res, 400, "All fields are required");

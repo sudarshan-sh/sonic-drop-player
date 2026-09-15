@@ -8,12 +8,12 @@ import {
 const router = express.Router();
 
 // add song to the playlist
-router.post("/add-song", addSongController);
+router.post("/", addSongController);
 
 // get all songs from the database
-router.get("/songs", getAllSongsController);
+router.get("/", getAllSongsController);
 
 // delete a song from the playlist
-router.post("/remove-song", removeSongController);
+router.post("/:id", removeSongController);
 
 export default router;
