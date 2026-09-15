@@ -1,5 +1,5 @@
 function App() {
-  return <>SONIC DROP PLAYER</>;
+  return <>SONIC DROP MUSIC PLAYER</>;
 }
 
 export default App;
