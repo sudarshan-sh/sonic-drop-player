@@ -47,7 +47,7 @@ const Home = ({ user }: HomeProps) => {
     <div>
       {user && (
         <p className="text-2xl text-center mt-4">
-          Hello, {user?.name}! Welcome back to the Sonic Drop Player.
+          <span className="text-zinc-400">Welcome back, {user.name}!</span>
         </p>
       )}
 
