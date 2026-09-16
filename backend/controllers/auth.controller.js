@@ -94,6 +94,11 @@ export const loginUserController = async (req, res) => {
   }
 };
 
+// get user info
+export const getUserController = async (req, res) => {
+  res.json(req.user);
+};
+
 // logout user
 export const logoutUserController = async (req, res) => {
   res.cookie("token", "", cookieOptions);
