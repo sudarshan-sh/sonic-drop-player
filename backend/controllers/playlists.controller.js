@@ -6,7 +6,10 @@ import {
   getAllPlaylistsService,
   getPlaylistSongsService,
 } from "../services/playlists.service.js";
-import { addSongService } from "../services/songs.service.js";
+import {
+  addSongService,
+  removeSongFromPlaylistService,
+} from "../services/songs.service.js";
 
 export const createPlaylistController = async (req, res) => {
   const { title, description, user_id } = req.body;
@@ -139,6 +142,32 @@ export const addSongToPlaylistController = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in addSongToPlaylistController:", error);
+    return handleResponse(
+      res,
+      error.status || 500,
+      error.status ? error.message : "Internal server error",
+    );
+  }
+};
+
+// remove a song from a playlist
+export const removeSongFromPlaylistController = async (req, res) => {
+  const playlist_id = req.params.id;
+  const song_id = req.params.songId;
+
+  if (!playlist_id || !song_id) {
+    return handleResponse(res, 400, "All fields are required");
+  }
+
+  try {
+    const playlistID = parseInt(playlist_id);
+    const songID = parseInt(song_id);
+    // remove song from the playlist
+    await removeSongFromPlaylistService(playlistID, songID);
+
+    return handleResponse(res, 200, "Song removed from the playlist!");
+  } catch (error) {
+    console.error("Error in removeSongFromPlaylistController:", error);
     return handleResponse(
       res,
       error.status || 500,

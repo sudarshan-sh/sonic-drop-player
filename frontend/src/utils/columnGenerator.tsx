@@ -1,10 +1,30 @@
 import { type Column } from "../components/Table";
 import type { Song } from "../types/song.types";
 
+type ActionVariant = "add" | "remove";
+
+const actionVariantStyles: Record<
+  ActionVariant,
+  { icon: string; className: string }
+> = {
+  add: {
+    icon: "+",
+    className: "bg-emerald-600 hover:bg-emerald-500",
+  },
+  remove: {
+    icon: "−",
+    className: "bg-red-600 hover:bg-red-500",
+  },
+};
+
 export const generateSongColumns = (
   requestedColumns: string[],
-  onAddAction: (songId: number) => void,
+  onAction: (songId: number) => void,
+  actionLabel: string = "Add to Playlist",
+  actionVariant: ActionVariant = "add",
 ): Column<Song>[] => {
+  const { icon, className: actionClassName } =
+    actionVariantStyles[actionVariant];
   // Master map of all possible available columns
   const columnMap: Record<string, Column<Song>> = {
     title: {
@@ -17,9 +37,7 @@ export const generateSongColumns = (
     },
     artist: {
       header: "Artist",
-      accessor: (song) => (
-        <span className="text-slate-300">{song.artist}</span>
-      ),
+      accessor: (song) => <span className="text-slate-300">{song.artist}</span>,
     },
     genre: {
       header: "Genre",
@@ -33,10 +51,10 @@ export const generateSongColumns = (
       header: "Actions",
       accessor: (song) => (
         <button
-          onClick={() => onAddAction(song.id)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 active:scale-95 transition"
+          onClick={() => onAction(song.id)}
+          className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-white shadow-sm active:scale-95 transition ${actionClassName}`}
         >
-          <span>+</span> Add to Playlist
+          <span>{icon}</span> {actionLabel}
         </button>
       ),
     },

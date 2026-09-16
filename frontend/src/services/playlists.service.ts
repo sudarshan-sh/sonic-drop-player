@@ -34,6 +34,13 @@ export const PlaylistService = {
     });
   },
 
+  async removeSongFromPlaylist(
+    playlistId: number,
+    songId: number,
+  ): Promise<void> {
+    await apiClient.delete(`${PLAYLISTS_API}/${playlistId}/songs/${songId}`);
+  },
+
   async getPlaylistSongs(playlistId: number): Promise<Song[]> {
     const response = await apiClient.get(
       `${PLAYLISTS_API}/${playlistId}/songs`,

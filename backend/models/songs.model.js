@@ -13,6 +13,19 @@ export const addSong = async (playlist_id, song_id) => {
   }
 };
 
+// remove a song from a playlist
+export const removeSongFromPlaylist = async (playlist_id, song_id) => {
+  const query = `DELETE FROM playlist_songs WHERE playlist_id = $1 AND song_id = $2`;
+  const values = [playlist_id, song_id];
+  try {
+    const result = await pool.query(query, values);
+    return result.rows[0]; // return the deleted playlist_song object
+  } catch (error) {
+    console.error("Error removing song from playlist:", error);
+    throw error;
+  }
+};
+
 // find song by id to check if it exists in the playlist
 export const findSongById = async (playlist_id, song_id) => {
   const query = `SELECT * FROM playlist_songs WHERE playlist_id = $1 AND song_id = $2`;

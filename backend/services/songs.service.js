@@ -3,6 +3,7 @@ import {
   removeSong,
   getAllSongs,
   findSongById,
+  removeSongFromPlaylist,
 } from "../models/songs.model.js";
 
 export const addSongService = async (playlist_id, song_id) => {
@@ -21,6 +22,18 @@ export const addSongService = async (playlist_id, song_id) => {
     return newSong;
   } catch (error) {
     console.error("Error in addSongService:", error);
+    throw error;
+  }
+};
+
+// remove a song from a playlist
+export const removeSongFromPlaylistService = async (playlist_id, song_id) => {
+  try {
+    // remove song from the playlist
+    const deletedSong = await removeSongFromPlaylist(playlist_id, song_id);
+    return deletedSong;
+  } catch (error) {
+    console.error("Error in removeSongFromPlaylistService:", error);
     throw error;
   }
 };
