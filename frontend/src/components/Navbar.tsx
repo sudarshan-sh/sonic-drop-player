@@ -18,6 +18,7 @@ const Navbar = ({
       setUser(null);
       alert("Logged out successfully!");
       navigate("/login");
+      localStorage.removeItem("user");
     } catch (error) {
       console.error("Error logging out:", error);
     }

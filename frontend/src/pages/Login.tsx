@@ -26,6 +26,8 @@ const Login = ({ setUser }: LoginForm) => {
         headers: { "Content-Type": "application/json" },
       });
       setUser(response.data.user);
+      // set the user in the local storage
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       alert("Login successful!");
       navigate("/");
     } catch (error) {

@@ -14,10 +14,11 @@ export const createPlaylist = async (title, description, user_id) => {
 };
 
 // get all playlists from the database
-export const getAllPlaylists = async () => {
-  const query = `SELECT * FROM playlists`;
+export const getAllPlaylists = async (userId) => {
+  const query = `SELECT * FROM playlists WHERE user_id = $1`;
+  const values = [userId];
   try {
-    const result = await pool.query(query);
+    const result = await pool.query(query, values);
     return result.rows; // return an array of playlist objects
   } catch (error) {
     console.error("Error getting all playlists:", error);

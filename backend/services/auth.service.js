@@ -1,4 +1,4 @@
-import { createUser, findUserByEmail } from "../models/auth.model.js";
+import { createUser, findUserByEmail, findUserById } from "../models/auth.model.js";
 
 export const createUserService = async (name, email, hashedPassword) => {
   try {
@@ -16,6 +16,16 @@ export const findUserByEmailService = async (email) => {
     return user;
   } catch (error) {
     console.error("Error in findUserByEmailService:", error);
+    throw error;
+  }
+};
+
+export const findUserByIdService = async (id) => {
+  try {
+    const user = await findUserById(id);
+    return user;
+  } catch (error) {
+    console.error("Error in findUserByIdService:", error);
     throw error;
   }
 };

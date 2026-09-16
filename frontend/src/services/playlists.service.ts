@@ -3,6 +3,21 @@ import { type Playlist } from "../components/Playlists/PlaylistCard";
 import { apiClient } from "../utils/apiClients";
 
 export const PlaylistService = {
+  // create a new playlist
+  async createPlaylist(
+    title: string,
+    description: string,
+    userId: number,
+  ): Promise<Playlist> {
+    const playlistData = {
+      title,
+      description,
+      user_id: userId,
+    };
+    const response = await apiClient.post(`${PLAYLISTS_API}`, playlistData);
+    return response.data.playlist;
+  },
+
   async getAllPlaylists(): Promise<Playlist[]> {
     const response = await apiClient.get(`${PLAYLISTS_API}`);
     return response.data.playlists;

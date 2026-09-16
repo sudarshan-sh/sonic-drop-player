@@ -21,7 +21,7 @@ export const protectedRoute = async (req, res, next) => {
         .json({ message: "Not authorized, user not found!" });
     }
 
-    req.user = user.rows[0];
+    req.user = { id: decoded.id };
     next(); // calling the next function to proceed to next middleware or route handler
   } catch (err) {
     console.error(err);

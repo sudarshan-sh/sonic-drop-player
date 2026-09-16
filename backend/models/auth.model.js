@@ -25,3 +25,16 @@ export const findUserByEmail = async (email) => {
     throw error;
   }
 };
+
+// find a user by id in the database, returns the user object if found, otherwise null
+export const findUserById = async (id) => {
+  const query = `SELECT * FROM users WHERE id = $1`;
+  const values = [id];
+  try {
+    const result = await pool.query(query, values);
+    return result.rows[0] || null; // return the user object if found, otherwise null
+  } catch (error) {
+    console.error("Error finding user by id:", error);
+    throw error;
+  }
+};

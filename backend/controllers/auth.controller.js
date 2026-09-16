@@ -1,6 +1,7 @@
 import {
   createUserService,
   findUserByEmailService,
+  findUserByIdService,
 } from "../services/auth.service.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -96,9 +97,16 @@ export const loginUserController = async (req, res) => {
 
 // get user info
 export const getUserController = async (req, res) => {
-  // res.json(req.user);
+  const userId = req.user.id;
+
+  const userObj = await findUserByIdService(userId);
+
+  if (!userObj) {
+    return handleResponse(res, 404, "User not found");
+  }
+
   return handleResponse(res, 200, "User fetched successfully", {
-    user: req.user,
+    user: userObj,
   });
 };
 

@@ -11,9 +11,9 @@ export const createPlaylistService = async (title, description, user_id) => {
 };
 
 // get all playlists from the database
-export const getAllPlaylistsService = async () => {
+export const getAllPlaylistsService = async (userId) => {
   try {
-    const playlists = await getAllPlaylists();
+    const playlists = await getAllPlaylists(userId);
     return playlists;
   } catch (error) {
     console.error("Error in getAllPlaylistsService:", error);

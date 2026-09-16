@@ -38,9 +38,10 @@ export const createPlaylistController = async (req, res) => {
 
 // get all playlists from the database
 export const getAllPlaylistsController = async (req, res) => {
+  const userId = req.user.id;
   try {
     // get all playlists from the database
-    const playlists = await getAllPlaylistsService();
+    const playlists = await getAllPlaylistsService(userId);
 
     return handleResponse(res, 200, "Playlists fetched successfully", {
       playlists,
