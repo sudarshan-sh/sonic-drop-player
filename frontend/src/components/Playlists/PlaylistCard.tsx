@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 
@@ -30,14 +31,14 @@ export const PlaylistCard = ({
           🎵
         </span>
 
-        <button
+        {/* <button
           onClick={() => onPlay(playlist.id)}
           className="absolute bottom-3 right-3 bg-emerald-500 text-black p-3 rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg hover:scale-105 active:scale-95"
         >
           <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
             <path d="M8 5v14l11-7z" />
           </svg>
-        </button>
+        </button> */}
       </div>
 
       <div className="flex items-start justify-between gap-2 relative">
