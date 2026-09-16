@@ -40,7 +40,6 @@ export const PlaylistCard = ({
         </button>
       </div>
 
-      {/* Content Metadata */}
       <div className="flex items-start justify-between gap-2 relative">
         <div className="truncate flex-1">
           <h3 className="font-bold text-zinc-100 text-base truncate group-hover:text-emerald-400 transition-colors">
@@ -54,7 +53,6 @@ export const PlaylistCard = ({
           </span>
         </div>
 
-        {/* Context Actions Dropdown Trigger */}
         <div className="relative">
           <button
             onClick={(e) => {

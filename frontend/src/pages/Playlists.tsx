@@ -41,10 +41,8 @@ const Playlists = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto min-h-screen bg-zinc-950 text-white">
-      {/* 1. Modular Header Slot */}
       <PlaylistHeader onOpenCreateModal={handleOpenCreateModal} />
 
-      {/* 2. Responsive Core List Wrap Grid Layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {playlists.map((playlist) => (
           <PlaylistCard
