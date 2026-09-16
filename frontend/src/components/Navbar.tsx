@@ -31,6 +31,13 @@ const Navbar = ({
           <div>
             {user ? (
               <>
+                {/* Playlists */}
+                <Link
+                  to="/playlists"
+                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Playlists
+                </Link>
                 <span className="text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
                   Welcome, {user?.name}!
                 </span>

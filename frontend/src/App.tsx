@@ -14,6 +14,7 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./components/NotFound";
 import type { User } from "./types/user.types";
+import Playlists from "./pages/Playlists";
 
 // axios will send cookies with each request
 axios.defaults.withCredentials = true;
@@ -64,6 +65,10 @@ function App() {
         <Route
           path="/register"
           element={user ? <Navigate to="/" /> : <Signup setUser={setUser} />}
+        />
+        <Route
+          path="/playlists"
+          element={user ? <Playlists /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>

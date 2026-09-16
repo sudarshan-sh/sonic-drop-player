@@ -5,3 +5,6 @@ export const AUTH_API = `${API_URL}/api/auth`;
 
 // songs API
 export const SONGS_API = `${API_URL}/api/songs`;
+
+// playlists API
+export const PLAYLISTS_API = `${API_URL}/api/playlists`;
