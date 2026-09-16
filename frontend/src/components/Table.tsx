@@ -12,9 +12,9 @@ interface TableProps<T> {
 
 export const Table = <T,>({ columns, data }: TableProps<T>) => {
   return (
-    <div className="overflow-x-auto w-full rounded-xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-md">
-      <table className="w-full border-collapse text-left text-sm text-zinc-300">
-        <thead className="bg-zinc-900 text-xs font-semibold uppercase tracking-wider text-zinc-400 border-b border-zinc-800">
+    <div className="overflow-x-auto w-full rounded-xl border border-slate-700 bg-slate-900 shadow-xl">
+      <table className="w-full border-collapse text-left text-sm text-slate-200">
+        <thead className="bg-slate-800 text-xs font-semibold uppercase tracking-wider text-indigo-300 border-b border-slate-700">
           <tr>
             {columns.map((col, index) => (
               <th key={index} className="px-6 py-4">
@@ -23,12 +23,12 @@ export const Table = <T,>({ columns, data }: TableProps<T>) => {
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-zinc-800/60">
+        <tbody className="divide-y divide-slate-700">
           {data.length === 0 ? (
             <tr>
               <td
                 colSpan={columns.length}
-                className="px-6 py-8 text-center text-zinc-500"
+                className="px-6 py-8 text-center text-slate-400"
               >
                 No items found.
               </td>
@@ -37,7 +37,9 @@ export const Table = <T,>({ columns, data }: TableProps<T>) => {
             data.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
-                className="hover:bg-zinc-800/40 transition-colors duration-150 group"
+                className={`transition-colors duration-150 group hover:bg-indigo-500/10 ${
+                  rowIndex % 2 === 0 ? "bg-slate-900" : "bg-slate-800/60"
+                }`}
               >
                 {columns.map((col, colIndex) => (
                   <td key={colIndex} className="px-6 py-4 align-middle">

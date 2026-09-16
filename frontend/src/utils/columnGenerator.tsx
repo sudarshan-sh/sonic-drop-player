@@ -1,4 +1,3 @@
-import React from "react";
 import { type Column } from "../components/Table";
 
 interface Song {
@@ -24,12 +23,14 @@ export const generateSongColumns = (
     },
     artist: {
       header: "Artist",
-      accessor: (song) => <span className="text-zinc-400">{song.artist}</span>,
+      accessor: (song) => (
+        <span className="text-slate-300">{song.artist}</span>
+      ),
     },
     genre: {
       header: "Genre",
       accessor: (song) => (
-        <span className="inline-flex items-center rounded-full bg-zinc-800 px-2.5 py-0.5 text-xs font-medium text-zinc-400">
+        <span className="inline-flex items-center rounded-full bg-indigo-500/15 px-2.5 py-0.5 text-xs font-medium text-indigo-300">
           {song.genre}
         </span>
       ),
