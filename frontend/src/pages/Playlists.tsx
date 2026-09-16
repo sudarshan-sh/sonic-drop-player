@@ -4,8 +4,7 @@ import {
   type Playlist,
 } from "./../components/Playlists/PlaylistCard";
 import { PlaylistHeader } from "../components/Playlists/PlaylistHeader";
-import axios from "axios";
-import { PLAYLISTS_API } from "../config/api";
+import { PlaylistService } from "../services/playlists.service";
 
 const Playlists = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -13,8 +12,7 @@ const Playlists = () => {
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
-        const response = await axios.get(`${PLAYLISTS_API}`);
-        const data = response.data.playlists;
+        const data = await PlaylistService.getAllPlaylists();
         setPlaylists(data);
       } catch (error) {
         console.error("Error fetching playlists:", error);
@@ -40,7 +38,7 @@ const Playlists = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto min-h-screen bg-zinc-950 text-white">
+    <div className="px-12 py-6 mx-auto min-h-screen bg-zinc-950 text-white">
       <PlaylistHeader onOpenCreateModal={handleOpenCreateModal} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

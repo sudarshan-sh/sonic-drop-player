@@ -1,30 +1,48 @@
+/* eslint-disable react-hooks/immutability */
 import { useEffect, useState } from "react";
 import { Table } from "../Table";
-import axios from "axios";
-import { SONGS_API } from "../../config/api";
 import { generateSongColumns } from "../../utils/columnGenerator";
+import { AddToPlaylistModal } from "../AddToPlaylistModal";
+import { SongsService } from "../../services/songs.service";
+import type { Song } from "../../types/song.types";
+import { PlaylistService } from "../../services/playlists.service";
+import type { Playlist } from "../Playlists/PlaylistCard";
 
 const Songslist = () => {
-  const [songs, setSongs] = useState([]);
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
+    useState(false);
 
   // Fetch the data from your API
   useEffect(() => {
-    const fetchSongs = async () => {
-      try {
-        const response = await axios.get(`${SONGS_API}`);
-        const data = response.data.songs;
-        setSongs(data);
-      } catch (error) {
-        console.error("Error fetching songs:", error);
-      }
-    };
     fetchSongs();
+    fetchPlaylists();
   }, []);
+
+  const fetchSongs = async () => {
+    try {
+      const data = await SongsService.getSongs();
+      setSongs(data as unknown as Song[]);
+    } catch (error) {
+      console.error("Error fetching songs:", error);
+    }
+  };
+
+  const fetchPlaylists = async () => {
+    try {
+      const data = await PlaylistService.getAllPlaylists();
+      setPlaylists(data);
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
+    }
+  };
 
   // Handler for adding a song to a playlist
   const handleAddToPlaylist = (songId: number) => {
     console.log(`Add song ID ${songId} to playlist request triggered.`);
     // Your Axios POST route integration logic will go here
+    setIsAddToPlaylistModalOpen(true);
   };
 
   // Define Table Column rules explicitly
@@ -41,6 +59,14 @@ const Songslist = () => {
 
       {/* Render our highly reusable component */}
       <Table columns={columns} data={songs} />
+
+      {/* Add to Playlist Modal */}
+      <AddToPlaylistModal
+        isOpen={isAddToPlaylistModalOpen}
+        onClose={() => setIsAddToPlaylistModalOpen(false)}
+        playlists={playlists}
+        onSelectPlaylist={() => console.log("Selected playlist")}
+      />
     </div>
   );
 };

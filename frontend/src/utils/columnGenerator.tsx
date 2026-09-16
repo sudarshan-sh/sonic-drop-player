@@ -1,11 +1,5 @@
 import { type Column } from "../components/Table";
-
-interface Song {
-  id: number;
-  title: string;
-  artist: string;
-  genre: string;
-}
+import type { Song } from "../types/song.types";
 
 export const generateSongColumns = (
   requestedColumns: string[],

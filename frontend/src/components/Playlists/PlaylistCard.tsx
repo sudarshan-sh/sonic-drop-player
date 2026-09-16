@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export interface Playlist {
   id: number;
-  name: string;
+  title: string;
   description: string;
   songCount: number;
 }
@@ -44,7 +44,7 @@ export const PlaylistCard = ({
       <div className="flex items-start justify-between gap-2 relative">
         <div className="truncate flex-1">
           <h3 className="font-bold text-zinc-100 text-base truncate group-hover:text-emerald-400 transition-colors">
-            {playlist.name}
+            {playlist.title}
           </h3>
           <p className="text-xs text-zinc-400 mt-0.5 line-clamp-2 min-h-[2rem]">
             {playlist.description || "No description provided."}
