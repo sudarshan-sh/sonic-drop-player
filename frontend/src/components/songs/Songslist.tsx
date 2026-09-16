@@ -49,6 +49,11 @@ const Songslist = () => {
   const onSelectPlaylist = async (playlistId: number) => {
     if (!activeSongID) return;
 
+    const addedSong = songs.find((song) => song.id === activeSongID);
+    const selectedPlaylist = playlists.find(
+      (playlist) => playlist.id === playlistId,
+    );
+
     try {
       await PlaylistService.addSongToPlaylist(playlistId, activeSongID);
 
@@ -56,6 +61,7 @@ const Songslist = () => {
       setIsAddToPlaylistModalOpen(false);
       setActiveSongID(null);
       setAddToPlaylistError(null);
+      alert(`Song ${addedSong?.title} added to ${selectedPlaylist?.title}!`);
 
       // Navigate to the playlists dashboard view
       navigate(`/playlists`);
