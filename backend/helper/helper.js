@@ -1,4 +1,4 @@
-import bcrypt, { compare } from "bcryptjs";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 // hashed password
@@ -32,6 +32,6 @@ export const handleResponse = (res, status, message, data = null) => {
   res.status(status).json({
     status,
     message,
-    data,
+    ...data,
   });
 };

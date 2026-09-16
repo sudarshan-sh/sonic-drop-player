@@ -26,8 +26,8 @@ const Signup = ({ setUser }: LoginForm) => {
       const response = await axios.post(`${AUTH_API}/signup`, form, {
         headers: { "Content-Type": "application/json" },
       });
+      alert(response.data.message || "Registration successful!");
       setUser(response.data.user);
-      alert("Registration successful!");
       navigate("/");
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;

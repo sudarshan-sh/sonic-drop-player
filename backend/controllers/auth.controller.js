@@ -27,7 +27,7 @@ export const createUserController = async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = hashPassword(password);
+    const hashedPassword = await hashPassword(password);
 
     // Create the user
     const newUser = await createUserService(name, email, hashedPassword);
@@ -64,13 +64,13 @@ export const loginUserController = async (req, res) => {
     // find user using email id
     const user = await findUserByEmailService(email);
 
-    if (user.rows.length === 0) {
+    if (!user || user.length === 0) {
       return handleResponse(res, 400, "No user found, please register first!");
     }
 
-    const userData = user.rows[0];
+    const userData = user;
 
-    const isMatch = comparePassword(password, userData.password);
+    const isMatch = await comparePassword(password, userData.password);
 
     if (!isMatch) {
       // if the password does not match, return an error message
@@ -96,6 +96,7 @@ export const loginUserController = async (req, res) => {
 
 // get user info
 export const getUserController = async (req, res) => {
+  console.log("user-info", req.user);
   res.json(req.user);
 };
 

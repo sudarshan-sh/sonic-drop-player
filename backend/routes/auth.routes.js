@@ -5,6 +5,7 @@ import {
   loginUserController,
   logoutUserController,
 } from "../controllers/auth.controller.js";
+import { protectedRoute } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.post("/signup", createUserController);
 router.post("/login", loginUserController);
 
 // user info
-router.get("/user", getUserController);
+router.get("/user", protectedRoute, getUserController);
 
 // logout
 router.post("/logout", logoutUserController);

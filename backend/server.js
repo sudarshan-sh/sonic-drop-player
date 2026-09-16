@@ -10,7 +10,13 @@ dotenv.config(); // reads the key-value pairs from .env and inject the values in
 
 const app = express();
 
-app.use(cors()); // to allow cross-origin requests
+app.use(
+  cors({
+    // allow only this origin (request from this URL would get allowed, others -> rejected)
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(express.json()); // to parse json request body
 app.use(cookieParser());
 
@@ -18,7 +24,6 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/songs", songsRoutes);
 app.use("/api/playlists", playlistsRoutes);
-
 
 const PORT = process.env.PORT || 8000;
 
