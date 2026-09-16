@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
-import { Table, type Column } from "../Table";
+import { Table } from "../Table";
 import axios from "axios";
 import { SONGS_API } from "../../config/api";
-
-// Define the structure matching your PostgreSQL schema
-interface Song {
-  id: number;
-  title: string;
-  artist: string;
-  genre: string;
-}
+import { generateSongColumns } from "../../utils/columnGenerator";
 
 const Songslist = () => {
   const [songs, setSongs] = useState([]);
@@ -35,39 +28,8 @@ const Songslist = () => {
   };
 
   // Define Table Column rules explicitly
-  const columns: Column<Song>[] = [
-    {
-      header: "Title",
-      accessor: (song) => (
-        <span className="font-medium text-white group-hover:text-emerald-400 transition-colors">
-          {song.title}
-        </span>
-      ),
-    },
-    {
-      header: "Artist",
-      accessor: (song) => <span className="text-zinc-400">{song.artist}</span>,
-    },
-    {
-      header: "Genre",
-      accessor: (song) => (
-        <span className="inline-flex items-center rounded-full bg-zinc-800 px-2.5 py-0.5 text-xs font-medium text-zinc-400">
-          {song.genre}
-        </span>
-      ),
-    },
-    {
-      header: "Actions",
-      accessor: (song) => (
-        <button
-          onClick={() => handleAddToPlaylist(song.id)}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-500 active:scale-95 transition"
-        >
-          <span>+</span> Add to Playlist
-        </button>
-      ),
-    },
-  ];
+  const columnsToShow = ["title", "artist", "genre", "actions"];
+  const columns = generateSongColumns(columnsToShow, handleAddToPlaylist);
 
   return (
     <div className="p-6 max-w-6xl mx-auto">

@@ -1,4 +1,4 @@
-import Songslist from "../components/songs/songslist";
+import Songslist from "../components/songs/Songslist";
 import type { User } from "../types/user.types";
 
 interface HomeProps {
