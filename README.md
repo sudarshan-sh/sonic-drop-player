@@ -5,168 +5,128 @@
 ## 📝 Table of Contents
 
 - [📝 Table of Contents](#-table-of-contents)
-- [📦 Installation](#-installation)
-- [🚀 Getting Started](#-getting-started)
-- [🌟 What You Can Do](#-what-you-can-do)
+- [✅ Prerequisites](#-prerequisites)
+- [📦 Clone the Repository](#-clone-the-repository)
+- [🐳 Database Setup (Docker)](#-database-setup-docker)
+- [⚙️ Backend Setup](#️-backend-setup)
+- [🎨 Frontend Setup](#-frontend-setup)
+- [🌟 Key Features](#-key-features)
 
-## 📦 Installation
+## ✅ Prerequisites
 
-To get started with this project, follow these steps:
+Make sure the following are installed on your machine before you begin:
 
-1. Clone the repository:
+- **Node.js** (v18 or later) & **npm**
+- **Docker Desktop** (to run the PostgreSQL database)
+- **Git**
+
+## 📦 Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/sonic-drop-player.git
+cd sonic-drop-player
 ```
 
-2. Install the dependencies:
-
-```bash
-npm install
-```
-
-3. Run the application:
-
-```bash
-npm run dev
-```
-
-4. Open your browser and navigate to `http://localhost:5173`.
+The repository already contains the full source for both the `backend/` (Express API) and `frontend/` (React + Vite client) — you don't need to scaffold anything, just install dependencies and configure your environment as shown below.
 
 ## 🐳 Database Setup (Docker)
 
-This project uses **PostgreSQL** running inside a **Docker** container. Follow these steps to pull the official image, start your local database container, and log in to manage your tables.
+This project uses **PostgreSQL** running inside a **Docker** container.
 
-### 1. Download and Run the Container
+### 1. Start the PostgreSQL Container
 
-Run the following command to download the PostgreSQL image and start a new container.
-
-_(Note: Replace `your_secure_password`, `your_username`, and `your_database_name` with your preferred local configurations before running the command)._
+_(Note: Replace `your_secure_password`, `your_username`, and `your_database_name` with your preferred local values — you'll reuse these exact values in the backend `.env` file in the next section)._
 
 ```bash
 docker run -d --name myDb -p 5432:5432 -e POSTGRES_PASSWORD=your_secure_password -e POSTGRES_USER=your_username -e POSTGRES_DB=your_database_name postgres
 ```
 
-### 2. Connect to the Database Console (psql)
+Give the container a few seconds to finish initializing before continuing.
 
-Once your container is up and running, connect directly to the interactive PostgreSQL terminal (`psql`) inside the container by matching the username and database name flags you set above:
+### 2. Load the Database Schema & Seed Data
+
+The repo ships with a ready-to-use schema at [`backend/data/schema.sql`](backend/data/schema.sql) — it creates the `users`, `songs`, `playlists`, and `playlist_songs` tables and seeds the `songs` table with a starter catalog. Load it directly into the running container:
 
 ```bash
-docker exec -it myDb psql -U your_username -d your_database_name
+docker exec -i myDb psql -U your_username -d your_database_name < backend/data/schema.sql
 ```
 
-From here, you can safely copy and paste your `CREATE TABLE` scripts to build the system database schema.
+_(Optional) To verify the tables were created, you can open an interactive session:_
 
-## ⚙️ Backend Setup & Packages
+```bash
+docker exec -it myDb psql -U your_username -d your_database_name -c "\dt"
+```
 
-Follow these steps to configure, install dependencies, and run the Node.js / Express development API server:
+## ⚙️ Backend Setup
 
-### 1. Initialize Node Project
+### 1. Install Dependencies
 
 ```bash
 cd backend
-npm init -y
+npm install
 ```
 
-### 2. Install Core Dependencies & Tooling
+This installs everything already declared in `backend/package.json`: **express**, **pg**, **bcryptjs**, **jsonwebtoken**, **cookie-parser**, **cors**, **dotenv**, and the dev-only auto-reloader **nodemon**.
 
-Install the required production packages along with the standard development file-watcher:
+### 2. Configure Environment Variables
 
-```bash
-# Install framework, database, security, and parsing libraries
-npm i express pg bcryptjs jsonwebtoken cookie-parser dotenv
-
-# Install development auto-reloader tool
-npm i nodemon -D
-```
-
-### 3. Add Project Run Scripts
-
-Open the generated `package.json` file inside the `backend/` directory and update the `"scripts"` field to match the configuration below:
-
-```json
-"scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js"
-}
-```
-
-### 4. Configure Environment Variables
-
-Locate the `.env.example` template file inside the backend directory and create your secure execution copy:
+Copy the example env file:
 
 ```bash
 cp .env.example .env
 ```
 
-Open the newly created `.env` file and input your specific Docker database credentials and `JWT_SECRET` key.
+Open the newly created `backend/.env` and fill it in — the `DB_*` values **must match** the credentials you used in the `docker run` command above:
 
-### 5. Launch Server
+```bash
+PORT=8000
+CLIENT_URL=http://localhost:5173
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=your_database_name
+DB_USER=your_username
+DB_PASSWORD=your_secure_password
+
+JWT_SECRET=any_long_random_string_here
+```
+
+### 3. Launch the Server
 
 ```bash
 npm run dev
 ```
 
-The server will boot up and listen for incoming HTTP request streams at `http://localhost:8000`.
+The API will start listening at `http://localhost:8000`.
 
 ---
 
-## 🎨 Frontend Setup & Packages
+## 🎨 Frontend Setup
 
-Follow these steps to generate and configure your React client setup using Vite, Tailwind CSS, and styling utilities:
-
-### 1. Scaffold React Boilerplate
+### 1. Install Dependencies
 
 ```bash
 cd ../frontend
-npm create vite@latest .
-```
-
-_(Select **React** and **TypeScript** or **JavaScript** from the Vite terminal interactive prompts)._
-
-Once scaffolding finishes, install the generated boilerplate's dependencies:
-
-```bash
 npm install
 ```
 
-### 2. Install Styling Framework & Utilities
+This installs everything already declared in `frontend/package.json`: **react**, **react-dom**, **react-router-dom**, **axios**, **tailwindcss** + **@tailwindcss/vite**, and the Vite/TypeScript tooling.
 
-Install Tailwind CSS v4 components alongside standard routing and networking modules:
+### 2. Configure Environment Variables
 
-```bash
-# Install v4 core engine toolchains
-npm install tailwindcss @tailwindcss/vite
-
-# Install routing and async network fetch dependencies
-npm i axios react-router-dom
-```
-
-### 3. Inject Tailwind Directives
-
-Open your global entry CSS file (typically `src/index.css`) and add the primary compilation directive right at the top line:
-
-```css
-@import "tailwindcss";
-```
-
-### 4. Configure Environment Variables
-
-Locate the `.env.example` template file inside the frontend directory and create your local execution copy:
+Copy the example env file:
 
 ```bash
 cp .env.example .env
 ```
 
-Open the newly created `.env` file and set `VITE_API_URL` to point at your running backend server (defaults to `http://localhost:8000`):
+Open the newly created `frontend/.env` and point it at your running backend (must match the backend's `PORT` from the previous section):
 
 ```bash
 VITE_API_URL="http://localhost:8000"
 ```
 
-### 5. Launch Application Interface
-
-Start the local Vite development compilation server process:
+### 3. Launch the Application
 
 ```bash
 npm run dev
