@@ -1,3 +1,4 @@
+import Songslist from "../components/songs/songslist";
 import type { User } from "../types/user.types";
 
 interface HomeProps {
@@ -12,6 +13,9 @@ const Home = ({ user }: HomeProps) => {
           Hello, {user?.name}! Welcome back to the PERN Auth App.
         </p>
       )}
+
+      {/* render the songs list component */}
+      <Songslist />
     </div>
   );
 };

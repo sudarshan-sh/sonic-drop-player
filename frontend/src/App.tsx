@@ -26,7 +26,7 @@ function App() {
     const fetchUser = async () => {
       try {
         const user = await axios.get(`${AUTH_API}/user`);
-        setUser(user.data);
+        setUser(user.data.user);
         setLoading(false);
       } catch (error) {
         console.error("Error in App.jsx:", error);
