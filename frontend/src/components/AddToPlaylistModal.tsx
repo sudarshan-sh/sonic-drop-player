@@ -6,6 +6,7 @@ interface AddToPlaylistModalProps {
   onClose: () => void;
   playlists: Playlist[];
   onSelectPlaylist: (playlistId: number) => void;
+  errorMessage?: string | null;
 }
 
 export const AddToPlaylistModal = ({
@@ -13,6 +14,7 @@ export const AddToPlaylistModal = ({
   onClose,
   playlists,
   onSelectPlaylist,
+  errorMessage,
 }: AddToPlaylistModalProps) => {
   if (!isOpen) return null;
 
@@ -32,6 +34,13 @@ export const AddToPlaylistModal = ({
             ✕
           </button>
         </div>
+
+        {/* Error message */}
+        {errorMessage && (
+          <div className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-400">
+            {errorMessage}
+          </div>
+        )}
 
         {/* Scrollable Playlist Selection List */}
         <div className="mt-4 max-h-60 overflow-y-auto space-y-2 pr-1 custom-scrollbar">

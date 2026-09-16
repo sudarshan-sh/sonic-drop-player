@@ -13,6 +13,19 @@ export const addSong = async (playlist_id, song_id) => {
   }
 };
 
+// find song by id to check if it exists in the playlist
+export const findSongById = async (playlist_id, song_id) => {
+  const query = `SELECT * FROM playlist_songs WHERE playlist_id = $1 AND song_id = $2`;
+  const values = [playlist_id, song_id];
+  try {
+    const result = await pool.query(query, values);
+    return result.rows[0] || null; // return the song object if found, otherwise null
+  } catch (error) {
+    console.error("Error finding song by id:", error);
+    throw error;
+  }
+};
+
 // get all songs from the database
 export const getAllSongs = async () => {
   const query = `SELECT * FROM songs`;

@@ -28,6 +28,8 @@ export const PlaylistService = {
   },
 
   async addSongToPlaylist(playlistId: number, songId: number): Promise<void> {
-    await apiClient.post(`${PLAYLISTS_API}/${playlistId}/songs`, { songId });
+    await apiClient.post(`${PLAYLISTS_API}/${playlistId}/songs`, {
+      song_id: songId,
+    });
   },
 };

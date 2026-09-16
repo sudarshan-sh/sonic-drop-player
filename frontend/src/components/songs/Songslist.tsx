@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/immutability */
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { Table } from "../Table";
 import { generateSongColumns } from "../../utils/columnGenerator";
 import { AddToPlaylistModal } from "../AddToPlaylistModal";
@@ -7,12 +9,18 @@ import { SongsService } from "../../services/songs.service";
 import type { Song } from "../../types/song.types";
 import { PlaylistService } from "../../services/playlists.service";
 import type { Playlist } from "../Playlists/PlaylistCard";
+import { useNavigate } from "react-router-dom";
 
 const Songslist = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
     useState(false);
+  const [activeSongID, setActiveSongID] = useState<number | null>(null);
+  const [addToPlaylistError, setAddToPlaylistError] = useState<string | null>(
+    null,
+  );
+  const navigate = useNavigate();
 
   // Fetch the data from your API
   useEffect(() => {
@@ -38,10 +46,32 @@ const Songslist = () => {
     }
   };
 
-  // Handler for adding a song to a playlist
+  const onSelectPlaylist = async (playlistId: number) => {
+    if (!activeSongID) return;
+
+    try {
+      await PlaylistService.addSongToPlaylist(playlistId, activeSongID);
+
+      // Cleanup states and close modal safely
+      setIsAddToPlaylistModalOpen(false);
+      setActiveSongID(null);
+      setAddToPlaylistError(null);
+
+      // Navigate to the playlists dashboard view
+      navigate(`/playlists`);
+    } catch (error) {
+      console.error("Error adding song to playlist:", error);
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        setAddToPlaylistError(error.response.data.message);
+      } else {
+        setAddToPlaylistError("Something went wrong. Please try again.");
+      }
+    }
+  };
+
   const handleAddToPlaylist = (songId: number) => {
-    console.log(`Add song ID ${songId} to playlist request triggered.`);
-    // Your Axios POST route integration logic will go here
+    setActiveSongID(songId);
+    setAddToPlaylistError(null);
     setIsAddToPlaylistModalOpen(true);
   };
 
@@ -63,9 +93,13 @@ const Songslist = () => {
       {/* Add to Playlist Modal */}
       <AddToPlaylistModal
         isOpen={isAddToPlaylistModalOpen}
-        onClose={() => setIsAddToPlaylistModalOpen(false)}
+        onClose={() => {
+          setIsAddToPlaylistModalOpen(false);
+          setAddToPlaylistError(null);
+        }}
         playlists={playlists}
-        onSelectPlaylist={() => console.log("Selected playlist")}
+        onSelectPlaylist={onSelectPlaylist}
+        errorMessage={addToPlaylistError}
       />
     </div>
   );

@@ -1,7 +1,21 @@
-import { addSong, removeSong, getAllSongs } from "../models/songs.model.js";
+import {
+  addSong,
+  removeSong,
+  getAllSongs,
+  findSongById,
+} from "../models/songs.model.js";
 
 export const addSongService = async (playlist_id, song_id) => {
   try {
+    // duplicate check: same song in the playlist
+    const existingEntry = await findSongById(playlist_id, song_id);
+
+    if (existingEntry) {
+      const error = new Error("Song already exists in the playlist");
+      error.status = 400;
+      throw error;
+    }
+
     // add song to the playlist
     const newSong = await addSong(playlist_id, song_id);
     return newSong;

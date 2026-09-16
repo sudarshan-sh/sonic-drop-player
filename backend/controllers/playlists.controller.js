@@ -5,6 +5,7 @@ import {
   editPlaylistService,
   getAllPlaylistsService,
 } from "../services/playlists.service.js";
+import { addSongService } from "../services/songs.service.js";
 
 export const createPlaylistController = async (req, res) => {
   const { title, description, user_id } = req.body;
@@ -108,5 +109,39 @@ export const deletePlaylistController = async (req, res) => {
   } catch (error) {
     console.error("Error in deletePlaylistController:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// add a song to a playlist
+export const addSongToPlaylistController = async (req, res) => {
+  const playlist_id = req.params.id;
+  const { song_id } = req.body;
+
+  if (!playlist_id || !song_id) {
+    return handleResponse(res, 400, "All fields are required");
+  }
+
+  try {
+    const playlistID = parseInt(playlist_id);
+    // add song to the playlist
+    const newSong = await addSongService(playlistID, song_id);
+
+    return handleResponse(res, 201, "Song added successfully", {
+      song: {
+        id: newSong.id,
+        title: newSong.title,
+        artist: newSong.artist,
+        album: newSong.album,
+        release_date: newSong.release_date,
+        genre: newSong.genre,
+      },
+    });
+  } catch (error) {
+    console.error("Error in addSongToPlaylistController:", error);
+    return handleResponse(
+      res,
+      error.status || 500,
+      error.status ? error.message : "Internal server error",
+    );
   }
 };

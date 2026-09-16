@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addSongToPlaylistController,
   createPlaylistController,
   deletePlaylistController,
   editPlaylistController,
@@ -20,5 +21,8 @@ router.put("/:id", editPlaylistController);
 
 // delete a playlist from the database
 router.delete("/:id", deletePlaylistController);
+
+// add a song to a playlist
+router.post("/:id/songs", addSongToPlaylistController);
 
 export default router;
