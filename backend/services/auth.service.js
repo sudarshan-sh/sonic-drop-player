@@ -1,4 +1,8 @@
-import { createUser, findUserByEmail, findUserById } from "../models/auth.model.js";
+import {
+  createUser,
+  findUserByEmail,
+  findUserById,
+} from "../models/auth.model.js";
 
 export const createUserService = async (name, email, hashedPassword) => {
   try {
