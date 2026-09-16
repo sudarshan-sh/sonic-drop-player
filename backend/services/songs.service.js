@@ -25,11 +25,19 @@ export const addSongService = async (playlist_id, song_id) => {
   }
 };
 
-// get all songs from the database
-export const getAllSongsService = async () => {
+// get a page of songs from the database
+export const getAllSongsService = async (page, pageSize, search) => {
   try {
-    const songs = await getAllSongs();
-    return songs;
+    const { songs, total } = await getAllSongs(page, pageSize, search);
+    return {
+      songs,
+      pagination: {
+        page,
+        pageSize,
+        total,
+        totalPages: Math.ceil(total / pageSize) || 1,
+      },
+    };
   } catch (error) {
     console.error("Error in getAllSongsService:", error);
     throw error;

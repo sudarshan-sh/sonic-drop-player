@@ -33,12 +33,21 @@ export const addSongController = async (req, res) => {
 
 // get all songs from the database
 export const getAllSongsController = async (req, res) => {
+  const page = Math.max(parseInt(req.query.page) || 1, 1);
+  const pageSize = Math.min(Math.max(parseInt(req.query.pageSize) || 10, 1), 100);
+  const search = req.query.search?.trim() || null;
+
   try {
-    // get all songs from the database
-    const songs = await getAllSongsService();
+    // get a page of songs from the database
+    const { songs, pagination } = await getAllSongsService(
+      page,
+      pageSize,
+      search,
+    );
 
     return handleResponse(res, 200, "Songs fetched successfully", {
       songs,
+      pagination,
     });
   } catch (error) {
     console.error("Error in getAllSongsController:", error);

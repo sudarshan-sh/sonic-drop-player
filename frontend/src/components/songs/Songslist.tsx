@@ -5,14 +5,12 @@ import axios from "axios";
 import { Table } from "../Table";
 import { generateSongColumns } from "../../utils/columnGenerator";
 import { AddToPlaylistModal } from "../AddToPlaylistModal";
-import { SongsService } from "../../services/songs.service";
 import type { Song } from "../../types/song.types";
 import { PlaylistService } from "../../services/playlists.service";
 import type { Playlist } from "../Playlists/PlaylistCard";
 import { useNavigate } from "react-router-dom";
 
-const Songslist = () => {
-  const [songs, setSongs] = useState<Song[]>([]);
+const Songslist = ({ songs }: { songs: Song[] }) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
     useState(false);
@@ -24,18 +22,8 @@ const Songslist = () => {
 
   // Fetch the data from your API
   useEffect(() => {
-    fetchSongs();
     fetchPlaylists();
   }, []);
-
-  const fetchSongs = async () => {
-    try {
-      const data = await SongsService.getSongs();
-      setSongs(data as unknown as Song[]);
-    } catch (error) {
-      console.error("Error fetching songs:", error);
-    }
-  };
 
   const fetchPlaylists = async () => {
     try {
@@ -61,7 +49,9 @@ const Songslist = () => {
       setIsAddToPlaylistModalOpen(false);
       setActiveSongID(null);
       setAddToPlaylistError(null);
-      alert(`Song ${addedSong?.title} added to ${selectedPlaylist?.title}!`);
+      alert(
+        `Song: ${addedSong?.title} added to the playlist: ${selectedPlaylist?.title}!`,
+      );
 
       // Navigate to the playlists dashboard view
       navigate(`/playlists`);

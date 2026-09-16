@@ -26,12 +26,25 @@ export const findSongById = async (playlist_id, song_id) => {
   }
 };
 
-// get all songs from the database
-export const getAllSongs = async () => {
-  const query = `SELECT * FROM songs`;
+// get a page of songs from the database, optionally filtered by a search term
+export const getAllSongs = async (page, pageSize, search) => {
+  const offset = (page - 1) * pageSize;
+  const searchTerm = search ? `%${search}%` : null;
+
+  const query = `
+    SELECT *, COUNT(*) OVER()::int AS total_count
+    FROM songs
+    WHERE $1::text IS NULL OR title ILIKE $1 OR artist ILIKE $1
+    ORDER BY id
+    LIMIT $2 OFFSET $3
+  `;
+  const values = [searchTerm, pageSize, offset];
+
   try {
-    const result = await pool.query(query);
-    return result.rows; // return an array of song objects
+    const result = await pool.query(query, values);
+    const total = result.rows[0]?.total_count || 0;
+    const songs = result.rows.map(({ total_count, ...song }) => song);
+    return { songs, total };
   } catch (error) {
     console.error("Error getting all songs:", error);
     throw error;
