@@ -96,7 +96,6 @@ export const loginUserController = async (req, res) => {
 
 // get user info
 export const getUserController = async (req, res) => {
-  console.log("user-info", req.user);
   res.json(req.user);
 };
 

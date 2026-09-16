@@ -4,7 +4,6 @@ import pool from "../config/db.js";
 export const protectedRoute = async (req, res, next) => {
   try {
     const token = req.cookies.token;
-    console.log("token", token);
     if (!token) {
       return res.status(401).json({ message: "Not authorized, no token!" });
     }

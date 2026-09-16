@@ -35,7 +35,7 @@ const Navbar = ({
             {user ? (
               <>
                 <span className="text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
-                  Welcome, {user.user?.name}!
+                  Welcome, {user.name}!
                 </span>
                 <button
                   onClick={() => handleLogout()}

@@ -9,7 +9,7 @@ const Home = ({ user }: HomeProps) => {
     <div>
       {user && (
         <p className="text-2xl text-center mt-4">
-          Hello, {user.user?.name}! Welcome back to the PERN Auth App.
+          Hello, {user?.name}! Welcome back to the PERN Auth App.
         </p>
       )}
     </div>
