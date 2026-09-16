@@ -25,55 +25,53 @@ const Navbar = ({
   };
 
   return (
-    <div>
-      <nav className="bg-gray-800 p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1
-            className="text-white font-bold text-xl cursor-pointer"
-            onClick={() => navigate("/")}
-          >
-            Sonic Drop Player
-          </h1>
-          <div>
-            {user ? (
-              <>
-                {/* Playlists */}
-                <Link
-                  to="/playlists"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Playlists
-                </Link>
-                <span className="text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
-                  Welcome, {user?.name}!
-                </span>
-                <button
-                  onClick={() => handleLogout()}
-                  className="bg-red-500 text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer hover:bg-red-600"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Register
-                </Link>
-              </>
-            )}
-          </div>
+    <nav className="sticky top-0 z-50 bg-gray-800 p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <h1
+          className="text-white font-bold text-xl cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          Sonic Drop Player
+        </h1>
+        <div>
+          {user ? (
+            <>
+              {/* Playlists */}
+              <Link
+                to="/playlists"
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Playlists
+              </Link>
+              <span className="text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
+                Welcome, {user?.name}!
+              </span>
+              <button
+                onClick={() => handleLogout()}
+                className="bg-red-500 text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 };
 
