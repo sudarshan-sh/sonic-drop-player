@@ -19,7 +19,6 @@ const Songslist = () => {
     const fetchSongs = async () => {
       try {
         const response = await axios.get(`${SONGS_API}`);
-        console.log("Fetched songs:", response.data);
         const data = response.data.songs;
         setSongs(data);
       } catch (error) {
