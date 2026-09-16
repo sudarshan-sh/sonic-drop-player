@@ -34,13 +34,16 @@ const Songslist = ({ songs }: { songs: Song[] }) => {
     }
   };
 
-  const onSelectPlaylist = async (playlistId: number) => {
+  const onSelectPlaylist = async (
+    playlistId: number,
+    playlistTitle?: string,
+  ) => {
     if (!activeSongID) return;
 
     const addedSong = songs.find((song) => song.id === activeSongID);
-    const selectedPlaylist = playlists.find(
-      (playlist) => playlist.id === playlistId,
-    );
+    const selectedPlaylistTitle =
+      playlistTitle ??
+      playlists.find((playlist) => playlist.id === playlistId)?.title;
 
     try {
       await PlaylistService.addSongToPlaylist(playlistId, activeSongID);
@@ -50,7 +53,7 @@ const Songslist = ({ songs }: { songs: Song[] }) => {
       setActiveSongID(null);
       setAddToPlaylistError(null);
       alert(
-        `Song: ${addedSong?.title} added to the playlist: ${selectedPlaylist?.title}!`,
+        `Song: ${addedSong?.title} added to the playlist: ${selectedPlaylistTitle}!`,
       );
 
       // Navigate to the playlists dashboard view
