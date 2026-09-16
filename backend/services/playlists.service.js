@@ -1,5 +1,6 @@
 import {
   createPlaylist,
+  editPlaylist,
   getAllPlaylists,
   getPlaylistSongs,
 } from "../models/playlists.model.js";

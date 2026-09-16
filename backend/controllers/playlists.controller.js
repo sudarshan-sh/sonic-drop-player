@@ -59,7 +59,7 @@ export const getAllPlaylistsController = async (req, res) => {
 
 // edit a playlist in the database
 export const editPlaylistController = async (req, res) => {
-  const { playlist_id } = req.params;
+  const playlist_id = req.params.id;
   const { title, description } = req.body;
 
   if (!playlist_id || !title) {

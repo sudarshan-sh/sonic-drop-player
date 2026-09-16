@@ -25,10 +25,7 @@ export const PlaylistCard = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div
-      className="group relative bg-zinc-900/40 border border-zinc-900 rounded-xl p-4 hover:bg-zinc-900/80 transition-all duration-300 cursor-pointer"
-      onClick={() => onPlay(playlist.id)}
-    >
+    <div className="group relative bg-zinc-900/40 border border-zinc-900 rounded-xl p-4 hover:bg-zinc-900/80 transition-all duration-300 cursor-pointer">
       <div className="relative aspect-square w-full rounded-lg bg-gradient-to-br from-zinc-800 to-zinc-900 shadow-md flex items-center justify-center mb-4 overflow-hidden border border-zinc-800">
         <span className="text-4xl group-hover:scale-110 transition-transform duration-300 select-none">
           🎵
@@ -42,7 +39,7 @@ export const PlaylistCard = ({
       </div>
 
       <div className="flex items-start justify-between gap-2 relative">
-        <div className="truncate flex-1">
+        <div className="truncate flex-1" onClick={() => onPlay(playlist.id)}>
           <h3 className="font-bold text-zinc-100 text-base truncate group-hover:text-emerald-400 transition-colors">
             {playlist.title}
           </h3>
@@ -92,7 +89,7 @@ export const PlaylistCard = ({
                   }}
                   className="w-full text-left px-4 py-2 text-xs font-medium hover:bg-red-950/40 text-red-400 hover:text-red-300 transition-colors flex items-center gap-2"
                 >
-                  🗑️ Delete Mix
+                  🗑️ Delete Playlist
                 </button>
               </div>
             </>

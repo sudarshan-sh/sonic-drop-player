@@ -19,6 +19,14 @@ export const PlaylistService = {
     return response.data.playlist;
   },
 
+  async editPlaylist(
+    id: number,
+    title: string,
+    description: string,
+  ): Promise<void> {
+    await apiClient.put(`${PLAYLISTS_API}/${id}`, { title, description });
+  },
+
   async getAllPlaylists(): Promise<Playlist[]> {
     const response = await apiClient.get(`${PLAYLISTS_API}`);
     return response.data.playlists;

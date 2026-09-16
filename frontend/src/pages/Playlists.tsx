@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,6 +13,9 @@ const Playlists = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  //   mode 'edit' or 'create'
+  const [mode, setMode] = useState<"edit" | "create">("create");
+  const [editingPlaylist, setEditingPlaylist] = useState<Playlist | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +33,26 @@ const Playlists = () => {
     fetchPlaylists();
   }, []);
 
-  const handleCreatePlaylist = async (title: string, description: string) => {
+  const handleSubmitPlaylist = async (title: string, description: string) => {
+    if (mode === "edit" && editingPlaylist) {
+      try {
+        await PlaylistService.editPlaylist(
+          editingPlaylist.id,
+          title,
+          description,
+        );
+        setPlaylists(
+          playlists.map((p) =>
+            p.id === editingPlaylist.id ? { ...p, title, description } : p,
+          ),
+        );
+        setEditingPlaylist(null);
+      } catch (error) {
+        console.error("Error editing playlist:", error);
+      }
+      return;
+    }
+
     // get user info from local storage
     const user = JSON.parse(localStorage.getItem("user") as string);
     if (!user) return;
@@ -40,10 +63,21 @@ const Playlists = () => {
         user.id,
       );
       setPlaylists([...playlists, playlist]);
-      setIsModalOpen(false);
     } catch (error) {
       console.error("Error creating playlist:", error);
     }
+  };
+
+  const handleOpenCreateModal = () => {
+    setMode("create");
+    setEditingPlaylist(null);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setMode("create");
+    setEditingPlaylist(null);
   };
 
   const handleViewPlaylist = (id: number) => {
@@ -52,7 +86,9 @@ const Playlists = () => {
   };
 
   const handleEditPlaylist = (id: number) => {
-    console.log(`Editing target details id: ${id}`);
+    setMode("edit");
+    setEditingPlaylist(playlists.find((p) => p.id === id) ?? null);
+    setIsModalOpen(true);
   };
 
   const handleDeletePlaylist = (id: number) => {
@@ -68,7 +104,7 @@ const Playlists = () => {
 
   return (
     <div className="px-12 py-6 mx-auto min-h-screen bg-zinc-950 text-white">
-      <PlaylistHeader onOpenCreateModal={() => setIsModalOpen(true)} />
+      <PlaylistHeader onOpenCreateModal={handleOpenCreateModal} />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {playlists.map((playlist) => (
@@ -84,8 +120,10 @@ const Playlists = () => {
 
       <CreatePlaylistModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onCreate={handleCreatePlaylist}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitPlaylist}
+        mode={mode}
+        editingPlaylist={editingPlaylist}
       />
     </div>
   );

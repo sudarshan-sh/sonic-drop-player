@@ -1,23 +1,40 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+/* eslint-disable react-hooks/set-state-in-effect */
+import React, { useEffect, useState } from "react";
+import type { Playlist } from "./Playlists/PlaylistCard";
 
 interface CreatePlaylistModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (name: string, description: string) => Promise<void>;
+  onSubmit: (title: string, description: string) => Promise<void>;
+  mode?: "create" | "edit";
+  editingPlaylist?: Playlist | null;
 }
+
+const emptyForm = { title: "", description: "" };
 
 const CreatePlaylistModal = ({
   isOpen,
   onClose,
-  onCreate,
+  onSubmit,
+  mode = "create",
+  editingPlaylist = null,
 }: CreatePlaylistModalProps) => {
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-  });
+  const [form, setForm] = useState(emptyForm);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // populate the form when opening for edit, reset it when opening for create
+  useEffect(() => {
+    if (!isOpen) return;
+
+    if (mode === "edit" && editingPlaylist) {
+      setForm({
+        title: editingPlaylist.title,
+        description: editingPlaylist.description,
+      });
+    } else {
+      setForm(emptyForm);
+    }
+  }, [isOpen, mode, editingPlaylist]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -34,11 +51,8 @@ const CreatePlaylistModal = ({
 
     try {
       setIsSubmitting(true);
-      await onCreate(form.title, form.description);
-      setForm({
-        title: "",
-        description: "",
-      });
+      await onSubmit(form.title, form.description);
+      setForm(emptyForm);
       onClose();
     } catch (error) {
       console.error(error);
@@ -49,6 +63,8 @@ const CreatePlaylistModal = ({
 
   if (!isOpen) return null;
 
+  const isEdit = mode === "edit";
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
       <div className="absolute inset-0" onClick={onClose} />
@@ -58,7 +74,7 @@ const CreatePlaylistModal = ({
         className="relative z-10 w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-150"
       >
         <h2 className="text-xl font-bold text-white mb-4">
-          Create New Playlist
+          {isEdit ? "Edit Playlist" : "Create New Playlist"}
         </h2>
 
         <div className="space-y-4">
@@ -103,7 +119,13 @@ const CreatePlaylistModal = ({
             disabled={isSubmitting || !form.title}
             className="rounded-lg bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-500 active:scale-95 disabled:opacity-50 disabled:scale-100 transition"
           >
-            {isSubmitting ? "Creating..." : "Create Playlist"}
+            {isSubmitting
+              ? isEdit
+                ? "Saving..."
+                : "Creating..."
+              : isEdit
+                ? "Save Changes"
+                : "Create Playlist"}
           </button>
         </div>
       </form>
