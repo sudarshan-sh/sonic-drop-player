@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   PlaylistCard,
   type Playlist,
@@ -11,6 +12,7 @@ const Playlists = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -44,8 +46,9 @@ const Playlists = () => {
     }
   };
 
-  const handlePlayPlaylist = (id: number) => {
-    console.log(`Playing item context id: ${id}`);
+  const handleViewPlaylist = (id: number) => {
+    const playlist = playlists.find((p) => p.id === id);
+    navigate(`/playlists/${id}`, { state: { title: playlist?.title } });
   };
 
   const handleEditPlaylist = (id: number) => {
@@ -72,7 +75,7 @@ const Playlists = () => {
           <PlaylistCard
             key={playlist.id}
             playlist={playlist}
-            onPlay={handlePlayPlaylist}
+            onPlay={handleViewPlaylist}
             onEdit={handleEditPlaylist}
             onDelete={handleDeletePlaylist}
           />

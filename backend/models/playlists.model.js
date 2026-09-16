@@ -13,15 +13,39 @@ export const createPlaylist = async (title, description, user_id) => {
   }
 };
 
-// get all playlists from the database
+// get all playlists from the database, including how many songs each has
 export const getAllPlaylists = async (userId) => {
-  const query = `SELECT * FROM playlists WHERE user_id = $1`;
+  const query = `
+    SELECT p.*, COUNT(ps.song_id)::int AS "songCount"
+    FROM playlists p
+    LEFT JOIN playlist_songs ps ON ps.playlist_id = p.id
+    WHERE p.user_id = $1
+    GROUP BY p.id
+  `;
   const values = [userId];
   try {
     const result = await pool.query(query, values);
     return result.rows; // return an array of playlist objects
   } catch (error) {
     console.error("Error getting all playlists:", error);
+    throw error;
+  }
+};
+
+// get all songs that belong to a playlist
+export const getPlaylistSongs = async (playlist_id) => {
+  const query = `
+    SELECT s.*
+    FROM songs s
+    JOIN playlist_songs ps ON ps.song_id = s.id
+    WHERE ps.playlist_id = $1
+  `;
+  const values = [playlist_id];
+  try {
+    const result = await pool.query(query, values);
+    return result.rows; // return an array of song objects
+  } catch (error) {
+    console.error("Error getting playlist songs:", error);
     throw error;
   }
 };

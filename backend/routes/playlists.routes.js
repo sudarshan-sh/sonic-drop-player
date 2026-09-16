@@ -5,6 +5,7 @@ import {
   deletePlaylistController,
   editPlaylistController,
   getAllPlaylistsController,
+  getPlaylistSongsController,
 } from "../controllers/playlists.controller.js";
 import { protectedRoute } from "../middleware/auth.js";
 
@@ -24,5 +25,8 @@ router.delete("/:id", deletePlaylistController);
 
 // add a song to a playlist
 router.post("/:id/songs", addSongToPlaylistController);
+
+// get all songs in a playlist
+router.get("/:id/songs", protectedRoute, getPlaylistSongsController);
 
 export default router;

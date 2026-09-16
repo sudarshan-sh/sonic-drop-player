@@ -1,5 +1,6 @@
 import { PLAYLISTS_API } from "../config/api";
 import { type Playlist } from "../components/Playlists/PlaylistCard";
+import type { Song } from "../types/song.types";
 import { apiClient } from "../utils/apiClients";
 
 export const PlaylistService = {
@@ -31,5 +32,12 @@ export const PlaylistService = {
     await apiClient.post(`${PLAYLISTS_API}/${playlistId}/songs`, {
       song_id: songId,
     });
+  },
+
+  async getPlaylistSongs(playlistId: number): Promise<Song[]> {
+    const response = await apiClient.get(
+      `${PLAYLISTS_API}/${playlistId}/songs`,
+    );
+    return response.data.songs;
   },
 };

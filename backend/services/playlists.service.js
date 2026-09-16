@@ -1,4 +1,8 @@
-import { createPlaylist, getAllPlaylists } from "../models/playlists.model.js";
+import {
+  createPlaylist,
+  getAllPlaylists,
+  getPlaylistSongs,
+} from "../models/playlists.model.js";
 
 export const createPlaylistService = async (title, description, user_id) => {
   try {
@@ -41,6 +45,17 @@ export const deletePlaylistService = async (playlist_id) => {
     return deletedPlaylist;
   } catch (error) {
     console.error("Error in deletePlaylistService:", error);
+    throw error;
+  }
+};
+
+// get all songs that belong to a playlist
+export const getPlaylistSongsService = async (playlist_id) => {
+  try {
+    const songs = await getPlaylistSongs(playlist_id);
+    return songs;
+  } catch (error) {
+    console.error("Error in getPlaylistSongsService:", error);
     throw error;
   }
 };

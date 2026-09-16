@@ -4,6 +4,7 @@ import {
   deletePlaylistService,
   editPlaylistService,
   getAllPlaylistsService,
+  getPlaylistSongsService,
 } from "../services/playlists.service.js";
 import { addSongService } from "../services/songs.service.js";
 
@@ -143,5 +144,25 @@ export const addSongToPlaylistController = async (req, res) => {
       error.status || 500,
       error.status ? error.message : "Internal server error",
     );
+  }
+};
+
+// get all songs that belong to a playlist
+export const getPlaylistSongsController = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return handleResponse(res, 400, "Playlist ID is required");
+  }
+
+  try {
+    const songs = await getPlaylistSongsService(parseInt(id));
+
+    return handleResponse(res, 200, "Playlist songs fetched successfully", {
+      songs,
+    });
+  } catch (error) {
+    console.error("Error in getPlaylistSongsController:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
