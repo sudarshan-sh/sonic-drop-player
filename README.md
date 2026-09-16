@@ -1,6 +1,6 @@
 # 🎵 sonic-drop-player
 
-`sonic-drop-player` is a music player app where logged-in users are allowed to create, edit, and delete playlists, add and remove songs from their collection, and listen to their favorite tracks.
+`sonic-drop-player` is a music playlist manager where logged-in users can browse a searchable song catalog, and create, edit, and delete playlists while adding and removing songs from them.
 
 ## 📝 Table of Contents
 
@@ -139,7 +139,7 @@ Open your browser and navigate to `http://localhost:5173` to explore your music 
 ## 🌟 Key Features
 
 - **🔐 Secure Login:** Create an account and log in safely to save your music library.
-- **🎶 Play Music:** Browse a main list of all songs and listen to them with a continuous audio player at the bottom of the screen.
-- **✨ Create & Edit Playlists:** Make new playlists, add descriptions or cover images, and update their names whenever you want.
+- **🎶 Browse Music:** Browse a paginated, searchable catalog of all songs by title or artist.
+- **✨ Create & Edit Playlists:** Make new playlists with a title and description, and rename or update them whenever you want.
 - **🗑️ Delete Playlists:** Easily delete old playlists you don't want anymore.
-- **🎵 Add & Remove Songs:** Add new songs to your playlists, or take out tracks you no longer want to hear with a single click.
+- **🎵 Add & Remove Songs:** Add songs from the catalog to any playlist, or remove ones you no longer want in it, right from the song list.
