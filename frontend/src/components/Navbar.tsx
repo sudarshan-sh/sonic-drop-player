@@ -27,10 +27,7 @@ const Navbar = ({
     <div>
       <nav className="bg-gray-800 p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-white font-bold text-xl">
-            {/* replace with your app name */}
-            Music Player App
-          </h1>
+          <h1 className="text-white font-bold text-xl">Sonic Drop Player</h1>
           <div>
             {user ? (
               <>
