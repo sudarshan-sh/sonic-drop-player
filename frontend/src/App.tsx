@@ -16,6 +16,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./components/NotFound";
 import type { User } from "./types/user.types";
 
+// axios will send cookies with each request
+axios.defaults.withCredentials = true;
+
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
