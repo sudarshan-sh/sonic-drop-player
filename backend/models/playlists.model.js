@@ -37,7 +37,7 @@ export const getPlaylistSongs = async (playlist_id) => {
   const query = `
     SELECT s.*
     FROM songs s
-    JOIN playlist_songs ps ON ps.song_id = s.id
+    INNER JOIN playlist_songs ps ON ps.song_id = s.id
     WHERE ps.playlist_id = $1
   `;
   const values = [playlist_id];
