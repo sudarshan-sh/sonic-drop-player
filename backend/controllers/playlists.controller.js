@@ -91,7 +91,7 @@ export const editPlaylistController = async (req, res) => {
 
 // delete a playlist from the database
 export const deletePlaylistController = async (req, res) => {
-  const { playlist_id } = req.params;
+  const playlist_id = req.params.id;
 
   if (!playlist_id) {
     return handleResponse(res, 400, "Playlist ID is required");

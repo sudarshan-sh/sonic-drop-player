@@ -1,5 +1,6 @@
 import {
   createPlaylist,
+  deletePlaylist,
   editPlaylist,
   getAllPlaylists,
   getPlaylistSongs,

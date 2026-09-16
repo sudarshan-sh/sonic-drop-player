@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,19 +20,20 @@ const Playlists = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPlaylists = async () => {
-      try {
-        const data = await PlaylistService.getAllPlaylists();
-        setPlaylists(data);
-      } catch (error) {
-        console.error("Error fetching playlists:", error);
-        setLoading(false);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPlaylists();
   }, []);
+
+  const fetchPlaylists = async () => {
+    try {
+      const data = await PlaylistService.getAllPlaylists();
+      setPlaylists(data);
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmitPlaylist = async (title: string, description: string) => {
     if (mode === "edit" && editingPlaylist) {
@@ -91,8 +93,14 @@ const Playlists = () => {
     setIsModalOpen(true);
   };
 
-  const handleDeletePlaylist = (id: number) => {
-    setPlaylists(playlists.filter((p) => p.id !== id));
+  const handleDeletePlaylist = async (id: number) => {
+    // setPlaylists(playlists.filter((p) => p.id !== id));
+    try {
+      await PlaylistService.deletePlaylist(id);
+      fetchPlaylists();
+    } catch (error) {
+      console.error("Error deleting playlist:", error);
+    }
   };
 
   if (loading)
