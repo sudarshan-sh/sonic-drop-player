@@ -96,7 +96,10 @@ export const loginUserController = async (req, res) => {
 
 // get user info
 export const getUserController = async (req, res) => {
-  res.json(req.user);
+  // res.json(req.user);
+  return handleResponse(res, 200, "User fetched successfully", {
+    user: req.user,
+  });
 };
 
 // logout user
