@@ -23,7 +23,7 @@ Make sure the following are installed on your machine before you begin:
 ## 📦 Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/sonic-drop-player.git
+git clone https://github.com/sudarshan-sh/sonic-drop-player.git
 cd sonic-drop-player
 ```
 

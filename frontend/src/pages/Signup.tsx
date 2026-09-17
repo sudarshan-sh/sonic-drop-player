@@ -28,6 +28,8 @@ const Signup = ({ setUser }: LoginForm) => {
       });
       alert(response.data.message || "Registration successful!");
       setUser(response.data.user);
+      // set the user in the local storage
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       navigate("/");
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
