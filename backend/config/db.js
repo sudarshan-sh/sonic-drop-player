@@ -11,9 +11,16 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
 });
 
-pool.on("connect", () => {
-  console.log("Connection pool established with the DB!");
-});
+// one-time connectivity check at startup
+pool
+  .connect()
+  .then((client) => {
+    console.log("Connection pool established with the DB, ready to serve!");
+    client.release();
+  })
+  .catch((err) => {
+    console.error(`Failed to connect to the DB: ${err}`);
+  });
 
 // when pool detects the error with the DB connection
 pool.on("error", (err) => {
