@@ -11,7 +11,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
 });
 
-// one-time connectivity check at startup
+// one-time connectivity check at startup, restrict new connection triggering on every request
 pool
   .connect()
   .then((client) => {
