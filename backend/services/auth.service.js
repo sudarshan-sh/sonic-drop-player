@@ -2,7 +2,7 @@ import {
   createUser,
   findUserByEmail,
   findUserById,
-} from "../models/auth.model.js";
+} from "../repositories/auth.repository.js";
 
 export const createUserService = async (name, email, hashedPassword) => {
   try {

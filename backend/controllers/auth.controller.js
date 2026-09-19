@@ -3,8 +3,7 @@ import {
   findUserByEmailService,
   findUserByIdService,
 } from "../services/auth.service.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { toPublicUser } from "../models/user.model.js";
 import {
   comparePassword,
   cookieOptions,
@@ -41,11 +40,7 @@ export const createUserController = async (req, res) => {
 
     res.status(201).json({
       message: "User created successfully",
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-      },
+      user: toPublicUser(newUser),
     });
   } catch (error) {
     console.error("Error in createUserController:", error);
@@ -83,11 +78,7 @@ export const loginUserController = async (req, res) => {
     res.cookie("token", token, cookieOptions);
 
     return handleResponse(res, 200, "User logged in successfully", {
-      user: {
-        id: userData.id,
-        name: userData.name,
-        email: userData.email,
-      },
+      user: toPublicUser(userData),
     });
   } catch (error) {
     console.error("Error in login:", error);
@@ -106,7 +97,7 @@ export const getUserController = async (req, res) => {
   }
 
   return handleResponse(res, 200, "User fetched successfully", {
-    user: userObj,
+    user: toPublicUser(userObj),
   });
 };
 
