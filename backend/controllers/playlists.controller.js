@@ -10,6 +10,8 @@ import {
   addSongService,
   removeSongFromPlaylistService,
 } from "../services/songs.service.js";
+import { toPublicPlaylist } from "../models/playlist.model.js";
+import { toPublicSong } from "../models/song.model.js";
 
 export const createPlaylistController = async (req, res) => {
   const { title, description, user_id } = req.body;
@@ -27,13 +29,7 @@ export const createPlaylistController = async (req, res) => {
     );
 
     return handleResponse(res, 201, "Playlist created successfully", {
-      playlist: {
-        id: newPlaylist.id,
-        title: newPlaylist.title || "",
-        description: newPlaylist.description || "",
-        user_id: newPlaylist.user_id,
-        created_at: newPlaylist.created_at,
-      },
+      playlist: toPublicPlaylist(newPlaylist),
     });
   } catch (error) {
     console.error("Error in createPlaylistController:", error);
@@ -75,13 +71,7 @@ export const editPlaylistController = async (req, res) => {
     );
 
     return handleResponse(res, 200, "Playlist updated successfully", {
-      playlist: {
-        id: updatedPlaylist.id,
-        title: updatedPlaylist.title || "",
-        description: updatedPlaylist.description || "",
-        user_id: updatedPlaylist.user_id,
-        created_at: updatedPlaylist.created_at,
-      },
+      playlist: toPublicPlaylist(updatedPlaylist),
     });
   } catch (error) {
     console.error("Error in editPlaylistController:", error);
@@ -102,13 +92,7 @@ export const deletePlaylistController = async (req, res) => {
     const deletedPlaylist = await deletePlaylistService(playlist_id);
 
     return handleResponse(res, 200, "Playlist deleted successfully", {
-      playlist: {
-        id: deletedPlaylist.id,
-        title: deletedPlaylist.title || "",
-        description: deletedPlaylist.description || "",
-        user_id: deletedPlaylist.user_id,
-        created_at: deletedPlaylist.created_at,
-      },
+      playlist: toPublicPlaylist(deletedPlaylist),
     });
   } catch (error) {
     console.error("Error in deletePlaylistController:", error);
@@ -131,14 +115,7 @@ export const addSongToPlaylistController = async (req, res) => {
     const newSong = await addSongService(playlistID, song_id);
 
     return handleResponse(res, 201, "Song added successfully", {
-      song: {
-        id: newSong.id,
-        title: newSong.title,
-        artist: newSong.artist,
-        album: newSong.album,
-        release_date: newSong.release_date,
-        genre: newSong.genre,
-      },
+      song: toPublicSong(newSong),
     });
   } catch (error) {
     console.error("Error in addSongToPlaylistController:", error);

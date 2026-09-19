@@ -4,7 +4,7 @@ import {
   editPlaylist,
   getAllPlaylists,
   getPlaylistSongs,
-} from "../models/playlists.model.js";
+} from "../repositories/playlists.repository.js";
 
 export const createPlaylistService = async (title, description, user_id) => {
   try {

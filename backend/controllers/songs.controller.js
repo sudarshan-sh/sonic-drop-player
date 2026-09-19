@@ -3,6 +3,7 @@ import {
   getAllSongsService,
   removeSongService,
 } from "../services/songs.service.js";
+import { toPublicSong } from "../models/song.model.js";
 
 export const addSongController = async (req, res) => {
   const { playlist_id, song_id } = req.body;
@@ -16,14 +17,7 @@ export const addSongController = async (req, res) => {
     const newSong = await addSongService(playlist_id, song_id);
 
     return handleResponse(res, 201, "Song added successfully", {
-      song: {
-        id: newSong.id,
-        title: newSong.title,
-        artist: newSong.artist,
-        album: newSong.album,
-        release_date: newSong.release_date,
-        genre: newSong.genre,
-      },
+      song: toPublicSong(newSong),
     });
   } catch (error) {
     console.error("Error in addSongController:", error);
@@ -69,15 +63,7 @@ export const removeSongController = async (req, res) => {
     const deletedSong = await removeSongService(playlist_id, song_id);
 
     return handleResponse(res, 200, "Song removed from the playlist!", {
-      song: {
-        id: deletedSong.id,
-        title: deletedSong.title,
-        artist: deletedSong.artist,
-        album: deletedSong.album,
-        release_date: deletedSong.release_date,
-        genre: deletedSong.genre,
-        created_at: deletedSong.created_at,
-      },
+      song: toPublicSong(deletedSong),
     });
   } catch (error) {
     console.error("Error in deleteSongController:", error);

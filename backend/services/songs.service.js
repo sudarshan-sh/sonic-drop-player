@@ -4,7 +4,7 @@ import {
   getAllSongs,
   findSongById,
   removeSongFromPlaylist,
-} from "../models/songs.model.js";
+} from "../repositories/songs.repository.js";
 
 export const addSongService = async (playlist_id, song_id) => {
   try {
