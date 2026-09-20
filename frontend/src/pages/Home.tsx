@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import Songslist from "../components/songs/Songslist";
 import type { User } from "../types/user.types";
