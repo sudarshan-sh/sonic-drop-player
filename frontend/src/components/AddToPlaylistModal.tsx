@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import type { Playlist } from "./Playlists/PlaylistCard";
 import CreatePlaylistModal from "./CreatePlaylistModal";
